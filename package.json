@@ -1,0 +1,14 @@
+{
+  "name": "seatlock-engine",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w server",
+    "dev:client": "npm run dev -w client",
+    "dev:server": "npm run dev -w server",
+    "seed": "npm run seed -w server"
+  }
+}
