@@ -2,28 +2,192 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design Tokens ─────────────────────────────── */
+:root {
+  --color-bg: #08090d;
+  --color-surface: #0f1117;
+  --color-card: #141720;
+  --color-border: #1e2233;
+  --color-muted: #2a2f45;
+  --color-text: #e2e8f0;
+  --color-subtle: #64748b;
+  --color-sky: #38bdf8;
+  --color-amber: #fbbf24;
+  --color-emerald: #34d399;
+  --color-red: #f87171;
+  --color-orange: #fb923c;
+}
+
+/* ── Base Reset ────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body,
 #root {
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  background:
-    radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 28%),
-    linear-gradient(180deg, #0b0b0d 0%, #101114 100%);
-  color: #e5e7eb;
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(56, 189, 248, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.05), transparent);
 }
 
-* {
-  box-sizing: border-box;
+/* ── Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f4a6a;
+}
+
+/* ── Shimmer Skeleton ──────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.8s linear infinite;
+}
+
+/* ── Screen Arc ─────────────────────────────────── */
+.screen-arc {
+  width: 70%;
+  max-width: 340px;
+  height: 8px;
+  margin: 0 auto 28px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.7), transparent);
+  border-radius: 0 0 50% 50%;
+  box-shadow: 0 4px 24px rgba(56, 189, 248, 0.25);
+  position: relative;
+}
+.screen-arc::before {
+  content: "SCREEN";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: rgba(100, 116, 139, 0.7);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ── Seat Buttons ───────────────────────────────── */
+.seat {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 44px;
+  border-radius: 10px 10px 6px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  will-change: transform;
+  outline: none;
+}
+
+/* Seat "headrest" nub */
+.seat::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 5px;
+  border-radius: 4px 4px 0 0;
+  background: inherit;
+  filter: brightness(1.3);
+}
+
+.seat:not(:disabled):hover {
+  transform: translateY(-2px) scale(1.06);
+}
+.seat:not(:disabled):active {
+  transform: scale(0.96);
+}
+.seat:disabled {
+  cursor: not-allowed;
+}
+
+.seat-available {
+  background: #1e2a3a;
+  color: #64748b;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.seat-available:not(:disabled):hover {
+  background: #253348;
+  color: #94a3b8;
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.seat-your_hold {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #1c1008;
+  animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.seat-other_hold {
+  background: linear-gradient(135deg, #ea580c, #c2410c);
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.4), 0 0 16px rgba(249, 115, 22, 0.15);
+}
+
+.seat-confirmed {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4), 0 0 16px rgba(239, 68, 68, 0.15);
+}
+
+/* ── Glass Card ─────────────────────────────────── */
+.glass-card {
+  background: rgba(20, 23, 32, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+}
+
+/* ── Gradient Text ──────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-sky {
+  background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 60%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

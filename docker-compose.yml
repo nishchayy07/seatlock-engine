@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: seatlock-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: seatlock_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - seatlock_pg_data:/var/lib/postgresql/data
+      - ./server/src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+
+  redis:
+    image: redis:7-alpine
+    container_name: seatlock-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+volumes:
+  seatlock_pg_data:
